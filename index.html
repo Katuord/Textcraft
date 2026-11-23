@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#101114">
-<meta name="description" content="TYPECRAFT 3.5 — instant gradient reversal animation preset">
-<title>TYPECRAFT — Typography Studio 3.5</title>
+<meta name="description" content="TYPECRAFT 3.7 — editable gradient reversal and per-property keyframe distribution">
+<title>TYPECRAFT — Typography Studio 3.7</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap');
 :root{--bg:#101114;--panel:#17191e;--panel2:#1d2026;--panel3:#242831;--line:#2c3039;--text:#f2f1ed;--muted:#858b98;--gold:#c8a96b;--gold2:#e4cc91;--blue:#8db8ff;--green:#72c9a6;--danger:#df7777;--r:12px;--shadow:0 18px 50px #0008}
@@ -193,7 +193,7 @@ body:not(.authenticated) .app{display:none}
 <div id="contextMenu"><button class="ctx-item" data-action="rename">名前を変更 <span>F2</span></button><button class="ctx-item" data-action="duplicate">複製 <span>Ctrl+D</span></button><button class="ctx-item" data-action="copyStyle">スタイルをコピー</button><button class="ctx-item" data-action="pasteStyle">スタイルを貼り付け</button><div class="ctx-sep"></div><button class="ctx-item" data-action="front">最前面へ</button><button class="ctx-item" data-action="back">最背面へ</button><div class="ctx-sep"></div><button class="ctx-item" data-action="lock">ロック / 解除</button><button class="ctx-item" data-action="hide">表示 / 非表示</button><div class="ctx-sep"></div><button class="ctx-item danger" data-action="delete">削除 <span>Delete</span></button></div>
 <div class="app">
   <header class="topbar">
-    <div class="brand"><div class="brand-mark">T</div><div><div class="brand-name">TYPECRAFT</div><div class="brand-sub">TYPOGRAPHY STUDIO · VERSION 3.5</div></div></div>
+    <div class="brand"><div class="brand-mark">T</div><div><div class="brand-name">TYPECRAFT</div><div class="brand-sub">TYPOGRAPHY STUDIO · VERSION 3.7</div></div></div>
     <div class="top-status" id="fontStatus">FONT LIBRARY READY</div><div class="save-indicator" id="saveStatus" title="このブラウザのローカルストレージへ自動保存">● LOCAL STORAGE · READY</div>
     <div class="top-actions">
       <button class="btn icon" id="undoBtn" title="元に戻す (Ctrl+Z)">↶</button>
@@ -256,7 +256,7 @@ body:not(.authenticated) .app{display:none}
 <div class="modal-backdrop" id="shortcutsModal"><div class="modal"><h3>キーボードショートカット</h3><div class="shortcut-list"><div><span>元に戻す</span><kbd>Ctrl / ⌘ + Z</kbd></div><div><span>やり直す</span><kbd>Ctrl / ⌘ + Y</kbd></div><div><span>複製</span><kbd>Ctrl / ⌘ + D</kbd></div><div><span>選択レイヤーをフォルダー化</span><kbd>Ctrl / ⌘ + G</kbd></div><div><span>削除</span><kbd>Delete</kbd></div><div><span>1px移動 / Shiftで10px</span><kbd>矢印キー</kbd></div><div><span>プロジェクト読込</span><kbd>Shift + O</kbd></div><div><span>名前変更</span><kbd>F2</kbd></div><div><span>コンテキストメニュー</span><kbd>右クリック</kbd></div></div><div class="modal-actions"><button class="btn primary" id="closeShortcuts">閉じる</button></div></div></div>
 
 <div class="modal-backdrop" id="helpModal"><div class="help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
-  <div class="help-head"><div><div class="help-eyebrow">TYPECRAFT · TYPOGRAPHY STUDIO</div><h2 id="helpTitle">ガイド & アップデート</h2><p>使い方、便利な操作、バージョン情報をまとめています。</p></div><div class="help-head-side"><span class="version-pill">VERSION 3.5</span><button class="btn icon" id="closeHelp" aria-label="閉じる">✕</button></div></div>
+  <div class="help-head"><div><div class="help-eyebrow">TYPECRAFT · TYPOGRAPHY STUDIO</div><h2 id="helpTitle">ガイド & アップデート</h2><p>使い方、便利な操作、バージョン情報をまとめています。</p></div><div class="help-head-side"><span class="version-pill">VERSION 3.7</span><button class="btn icon" id="closeHelp" aria-label="閉じる">✕</button></div></div>
   <div class="help-tabs"><button class="tab active" data-help-tab="start">はじめかた</button><button class="tab" data-help-tab="features">機能ガイド</button><button class="tab" data-help-tab="updates">更新履歴</button><button class="tab" data-help-tab="save">保存・FAQ</button></div>
   <div class="help-content">
     <section data-help-panel="start">
@@ -274,11 +274,11 @@ body:not(.authenticated) .app{display:none}
         <article><span>◈</span><div><strong>グラデーション</strong><p>複数色ストップと透明度ストップを自由に追加・移動できます。色見本の「COLOR MOOD LIBRARY」は見出しを押して折り畳みできます。</p></div></article><article><span>T</span><div><strong>テキスト診断・復旧</strong><p>上部ツールバーの「T テキスト診断」で、非表示レイヤーや非表示フォルダー、空テキスト、透明度による見えにくさを確認できます。表示復旧は確認してから実行します。</p></div></article>
         <article><span>▰</span><div><strong>フォルダー・レイヤー</strong><p>Ctrl / ⌘ を押しながら複数選択し、Ctrl / ⌘ + G でフォルダー化。フォルダーの中にフォルダーを作れます。ドラッグで階層移動もできます。</p></div></article>
         <article><span>◐</span><div><strong>マスク・切り抜き</strong><p>切り抜かれる側を選び、「マスク元レイヤー」で図形・文字・画像を指定。内側を残す／重なりをくり抜くを切り替えます。</p></div></article>
-        <article><span>▶</span><div><strong>Animation Studio</strong><p>レイヤーを選択してキーフレームを追加。プロパティにチェックを入れ、時刻を移動して値を変更します。GIFは内蔵エンコーダーで書き出せます。フォント読み込みのみ通信が必要な場合があります。</p></div></article>
+        <article><span>▶</span><div><strong>Animation Studio</strong><p>レイヤーを選択してキーフレームを追加。プロパティにチェックを入れ、時刻を移動して値を変更します。グラデーション反転は再生ヘッド位置または秒数を指定して専用キーを追加し、紫色のキーをドラッグして時刻を調整できます。タイムライン下の「属性別均等配置」では、X・Y・反転など対象属性を選び、最初と最後のキーを固定したまま中間キーを均等に並べ直せます。各属性の補間も独立して行うため、別属性のキーが間にあっても動きが途切れません。GIFは内蔵エンコーダーで書き出せます。フォント読み込みのみ通信が必要な場合があります。</p></div></article>
       </div>
     </section>
     <section data-help-panel="updates" hidden>
-      <div class="release-current"><span class="version-pill">LATEST · 3.5</span><strong>グラデーションの瞬間反転アニメーションを追加</strong><ul><li>Animation Studioに「グラデーション反転（瞬間）」プリセットを追加。色ストップと透明度ストップの位置を逆順にし、指定したキーフレームでパッと切り替えます。</li><li>複数色・複数の中間ストップにも対応。塗りと縁取りのグラデーションを反転します。</li><li>反転状態を通常のキーフレーム値として編集でき、反転タイミングをタイムライン上で移動できます。</li><li>アニメーションプレビューとGIF書き出しにも同じ反転結果を反映します。</li></ul><strong>3.4 の更新</strong><ul><li>文字色が赤→橙→黄→緑→水色→青→紫→赤と循環するレインボー文字プリセットを追加。</li><li>枠線色のレインボー循環と、赤→紫→赤のアウトラインループを追加。</li><li>グラデーションの色変化に加え、左右・上下の位置反転往復、XY反転、左右・上下ミラーを追加。</li><li>オービット、エラスティック、ハートビート、グローパルス、フラッシュなどのモーションプリセットを追加。</li><li>GIF.jsと外部Workerへの依存を撤廃。内蔵GIFエンコーダーでGIFを書き出せるように修正。</li><li>GIF書き出しにマスク合成を反映し、進捗表示・画像読み込み待機・解像度の自動調整を追加。</li></ul></div>
+      <div class="release-current"><span class="version-pill">LATEST · 3.7</span><strong>属性ごとのキーフレーム均等配置を追加</strong><ul><li>Animation Studioのタイムラインに「均等配置する属性」セレクターと「均等配置」ボタンを追加。</li><li>X・Y・位置・色・透明度・グラデーション反転など、選んだ属性のキーだけを均等配置できます。</li><li>最初と最後のキー時刻は固定し、その間のキーを等間隔に再配置します。</li><li>同じ時刻にある別属性のキーは移動・削除せず、対象属性だけを分離して再配置します。</li><li>各属性を独立したキー列として補間するように修正。Xのキーを移動しても、Yなど別属性の動きが不自然に途切れません。</li><li>グラデーション反転のON/OFFキーにも対応。瞬間切替の状態を維持したまま時刻を整えられます。</li><li>キー数・対象属性の表示を追加し、3個以上のキーがある属性を選ぶと実行できます。</li></ul><strong>3.6 の更新</strong><ul><li>グラデーション反転を固定位置のプリセットではなく、再生ヘッドの任意時刻に追加できる専用キーフレームへ変更。</li><li>秒数指定、ON／OFFキー、削除、ドラッグによる時刻変更に対応。</li><li>反転はキーに到達した瞬間に切り替わるステップ状態として保持。</li></ul><strong>3.5 の更新</strong><ul><li>グラデーションの色ストップ・透明度ストップを瞬時に逆向きへ切り替える基本機能を追加。</li><li>アニメーションプレビューとGIF書き出しに反転状態を反映。</li></ul><strong>3.4 の更新</strong><ul><li>文字色が赤→橙→黄→緑→水色→青→紫→赤と循環するレインボー文字プリセットを追加。</li><li>枠線色のレインボー循環と、赤→紫→赤のアウトラインループを追加。</li><li>グラデーションの色変化に加え、左右・上下の位置反転往復、XY反転、左右・上下ミラーを追加。</li><li>オービット、エラスティック、ハートビート、グローパルス、フラッシュなどのモーションプリセットを追加。</li><li>GIF.jsと外部Workerへの依存を撤廃。内蔵GIFエンコーダーでGIFを書き出せるように修正。</li><li>GIF書き出しにマスク合成を反映し、進捗表示・画像読み込み待機・解像度の自動調整を追加。</li></ul></div>
       <div class="release-item"><span>3.3</span><div><strong>テキスト編集とワークスペース</strong><p>テキスト編集の不具合修正、旧テキストレイヤー診断・復旧、折り畳みグラデーションプリセット、使い方ガイドを追加。</p></div></div>
       <div class="release-item"><span>3.2</span><div><strong>フォルダーと数値入力</strong><p>入れ子フォルダー、複数選択、ドラッグ移動、数値入力欄、フォント読込の改善。</p></div></div>
       <div class="release-item"><span>3.1</span><div><strong>アニメーション・デザイン機能</strong><p>アニメーション編集、キーフレーム、グラデーション編集、画像・図形の装飾とマスク機能を拡張。</p></div></div>
@@ -288,14 +288,14 @@ body:not(.authenticated) .app{display:none}
       <div class="help-faq"><article><strong>作品はどこに保存される？</strong><p>編集中の変更は、このブラウザのLocalStorageに自動保存されます。同じブラウザ・同じ端末で使えますが、別端末へは同期されません。</p></article><article><strong>バックアップを作るには？</strong><p>右上の「プロジェクト保存」で .typecraft ファイルをダウンロードしてください。別の端末やブラウザでは「プロジェクト読込」から読み込めます。</p></article><article><strong>フォントが変わらない・読み込めない</strong><p>フォントはGoogle Fontsから読み込むため、ネット接続やブラウザの制限によって代替フォントになる場合があります。右上のフォント状態表示も確認してください。</p></article><article><strong>古いプロジェクトは使える？</strong><p>旧バージョンの .typecraft / JSON の読み込みに対応しています。大切な作品は、読み込み前に元ファイルを残しておいてください。</p></article><article><strong>画像を書き出すには？</strong><p>PNGは透過に対応、WebPはファイルサイズを抑えられます。SVGは現在、PNG画像を埋め込む形式です。</p></article></div>
     </section>
   </div>
-  <div class="help-footer"><span>TYPECRAFT 3.5 · LOCAL PROJECT WORKSPACE</span><button class="btn primary" id="closeHelpFooter">閉じる</button></div>
+  <div class="help-footer"><span>TYPECRAFT 3.7 · LOCAL PROJECT WORKSPACE</span><button class="btn primary" id="closeHelpFooter">閉じる</button></div>
 </div></div>
 
 <div class="modal-backdrop" id="resizeModal"><div class="modal"><h3>キャンバスサイズ</h3><p>幅と高さをピクセル単位で指定します。</p><div class="field-row"><div><label class="control-label">幅（px）</label><input class="field" id="customW" type="number" min="64" max="6000" value="1600"></div><div><label class="control-label">高さ（px）</label><input class="field" id="customH" type="number" min="64" max="6000" value="900"></div></div><div class="modal-actions"><button class="btn" id="cancelResize">キャンセル</button><button class="btn primary" id="confirmResize">適用</button></div></div></div>
 <div class="modal-backdrop anim-backdrop" id="animationModal">
 <section class="anim-app" role="dialog" aria-label="Animation Studio">
   <header class="anim-topbar">
-    <div class="anim-brand"><div class="anim-brand-mark">✦</div><div><div class="anim-brand-title">ANIMATION STUDIO 3.5</div><div class="anim-brand-sub">MOTION DESIGN WORKSPACE</div></div></div>
+    <div class="anim-brand"><div class="anim-brand-mark">✦</div><div><div class="anim-brand-title">ANIMATION STUDIO 3.7</div><div class="anim-brand-sub">MOTION DESIGN WORKSPACE</div></div></div>
     <div class="anim-target"><span>ACTIVE OBJECT</span><strong id="animTargetName">未選択</strong></div>
     <div class="anim-top-controls">
       <label class="anim-top-field"><span>DURATION</span><input class="field" id="animDuration" type="number" min="1" max="30" value="4"><b>SEC</b></label>
@@ -363,7 +363,7 @@ body:not(.authenticated) .app{display:none}
 <div><label class="check-line"><span>左右反転</span><input type="checkbox" data-anim-prop="flipX"></label><label class="check-line"><span>状態</span><input type="checkbox" id="animFlipX" data-anim-field="flipX"></label></div>
 <div><label class="check-line"><span>上下反転</span><input type="checkbox" data-anim-prop="flipY"></label><label class="check-line"><span>状態</span><input type="checkbox" id="animFlipY" data-anim-field="flipY"></label></div>
 <div><label class="check-line"><span>グラデーション角度</span><input type="checkbox" data-anim-prop="gradientAngle" checked></label><input class="field" type="number" id="animGradientAngle" data-anim-field="gradientAngle" step="1"></div>
-<div><label class="check-line"><span>グラデーション反転（瞬間切替）</span><input type="checkbox" data-anim-prop="gradientReverse"></label><label class="check-line"><span>反転状態（ON＝逆向き）</span><input type="checkbox" id="animGradientReverse" data-anim-field="gradientReverse"></label><span class="note">キー位置で色ストップ・透明度ストップの並びを一瞬で反転します。ゆっくり補間しません。</span></div>
+<div><label class="check-line"><span>グラデーション反転（瞬間切替）</span><input type="checkbox" data-anim-prop="gradientReverse"></label><label class="check-line"><span>反転状態（ON＝逆向き）</span><input type="checkbox" id="animGradientReverse" data-anim-field="gradientReverse"></label><span class="note">ON/OFFのキーフレームで、キー位置に到達した瞬間だけ反転します。下の操作で再生ヘッド位置または秒数を指定できます。</span></div>
 <div><label class="check-line"><span>縁取りグラデーション角度</span><input type="checkbox" data-anim-prop="strokeGradientAngle"></label><input class="field" type="number" id="animStrokeGradientAngle" data-anim-field="strokeGradientAngle" step="1"></div>
 <div><label class="check-line"><span>縁取り Gradient Offset X</span><input type="checkbox" data-anim-prop="strokeGradientOffsetX"></label><input class="field" type="number" id="animStrokeGradientOffsetX" data-anim-field="strokeGradientOffsetX" min="-2" max="2" step=".01"></div>
 <div><label class="check-line"><span>縁取り Gradient Offset Y</span><input type="checkbox" data-anim-prop="strokeGradientOffsetY"></label><input class="field" type="number" id="animStrokeGradientOffsetY" data-anim-field="strokeGradientOffsetY" min="-2" max="2" step=".01"></div>
@@ -399,7 +399,7 @@ body:not(.authenticated) .app{display:none}
           <div class="anim-preset-subtitle">COLOR & OUTLINE · 色・縁取り</div>
           <button class="btn" data-anim-preset="rainbow">🌈 文字色レインボー</button><button class="btn" data-anim-preset="outlineLoop">🟥 赤→紫→赤の枠線</button><button class="btn" data-anim-preset="outlineRainbow">🌈 枠線レインボー</button><button class="btn" data-anim-preset="rainbowGradient">◈ レインボーグラデーション</button>
           <div class="anim-preset-subtitle">REVERSE & POSITION · 反転・位置</div>
-          <button class="btn" data-anim-preset="gradientReverse">⇄ グラデーション反転（瞬間）</button><button class="btn" data-anim-preset="reverseX">↔ 左右位置反転</button><button class="btn" data-anim-preset="reverseY">↕ 上下位置反転</button><button class="btn" data-anim-preset="reverseXY">⤢ XY位置反転</button><button class="btn" data-anim-preset="flipX">⇋ 左右ミラー</button><button class="btn" data-anim-preset="flipY">⇅ 上下ミラー</button>
+          <button class="btn" data-anim-preset="gradientReverse">⇄ 反転キー追加（現在時刻）</button><button class="btn" data-anim-preset="reverseX">↔ 左右位置反転</button><button class="btn" data-anim-preset="reverseY">↕ 上下位置反転</button><button class="btn" data-anim-preset="reverseXY">⤢ XY位置反転</button><button class="btn" data-anim-preset="flipX">⇋ 左右ミラー</button><button class="btn" data-anim-preset="flipY">⇅ 上下ミラー</button>
           <div class="anim-preset-subtitle">DYNAMIC MOTION · 動き</div>
           <button class="btn" data-anim-preset="orbit">◎ オービット</button><button class="btn" data-anim-preset="elastic">〰 エラスティック</button><button class="btn" data-anim-preset="heartbeat">♥ ハートビート</button><button class="btn" data-anim-preset="glowPulse">✧ グローパルス</button><button class="btn" data-anim-preset="flash">ϟ フラッシュ</button><button class="btn" data-anim-preset="drift">☁ ドリフト</button>
         </div></div>
@@ -1796,7 +1796,7 @@ applyAnimationPreset=function(kind){
 // ================= TYPECRAFT 3.5 · Instant gradient reversal animation =================
 // This is a timeline preset, not a gradual interpolation: the stop positions
 // switch from p to (1-p) exactly at the reversal keyframe.
-ANIM_PROP_LABELS.gradientReverse='グラデーション反転（瞬間）';
+ANIM_PROP_LABELS.gradientReverse='グラデーション反転キー';
 Object.assign(ANIM_PROP_CATEGORY,{gradientReverse:'color'});
 ANIM_STYLE_PROPS.add('gradientReverse');
 const tc35BaseAnimationBaseValue=animationBaseValue;
@@ -2037,6 +2037,427 @@ async function tc34ExportGIF(){
 // Replace the old click listener completely; no external script or Worker is loaded.
 const tc34OldGifButton=$('#exportGIF');
 if(tc34OldGifButton){const tc34NewGifButton=tc34OldGifButton.cloneNode(true);tc34OldGifButton.replaceWith(tc34NewGifButton);tc34NewGifButton.addEventListener('click',tc34ExportGIF);}
+
+
+// ================= TYPECRAFT 3.6 · Editable gradient-reversal keyframes =================
+// A reverse key is a real, draggable timeline key at the exact time selected by the user.
+// It is a stepped boolean state: no interpolation or fade is applied between keys.
+(function installTypecraft36GradientTimeline(){
+  const style=document.createElement('style');
+  style.textContent=`
+    .anim-key-dot.tc36-gradient-reverse{background:#a879e6!important;border-color:#ead7ff!important;box-shadow:0 0 9px #a879e688,0 1px 7px #0009!important}
+    .anim-key-dot.tc36-gradient-reverse:hover,.anim-key-dot.tc36-gradient-reverse.active{background:#ead7ff!important;border-color:#fff!important;box-shadow:0 0 0 4px #bd8cff44,0 0 12px #bd8cff!important}
+    .anim-track-lane.tc36-gradient-reverse-lane{background-image:linear-gradient(90deg,#b98cff12 1px,transparent 1px)!important}
+    .tc36-reverse-tools{display:grid;grid-template-columns:minmax(78px,.8fr) repeat(3,minmax(0,1fr));gap:5px;margin:8px 0 4px;align-items:center}
+    .tc36-reverse-tools .field{padding:7px 6px;font:9px 'DM Mono',monospace;min-width:0}
+    .tc36-reverse-tools .btn{padding:7px 5px;font-size:8px;min-width:0;white-space:normal}
+    .tc36-reverse-tools .tc36-wide{grid-column:1/-1;display:flex;gap:5px}
+    .tc36-reverse-tools .tc36-wide .btn{flex:1}
+    .tc36-reverse-status{font:8px 'DM Mono',monospace;color:#c6a7f2;margin:5px 0 2px;line-height:1.5}
+    .tc36-reverse-help{font-size:8px;color:#8993a2;line-height:1.6;margin:6px 0}
+    @media(max-width:1100px){.tc36-reverse-tools{grid-template-columns:1fr 1fr}.tc36-reverse-tools .tc36-wide{grid-column:1/-1}}
+  `;
+  document.head.appendChild(style);
+
+  const propCheck=document.querySelector('[data-anim-prop="gradientReverse"]');
+  const valueField=document.querySelector('[data-anim-field="gradientReverse"]');
+  const valueCell=valueField?.closest('.anim-fields>div');
+  let timeField=null,statusNode=null;
+
+  // Fix the missing helper referenced by the 3.5 preset implementation.
+  function tc35EnableAnimProp(prop){
+    const input=document.querySelector(`[data-anim-prop="${prop}"]`);
+    if(input){input.checked=true;input.disabled=false;input.closest('.anim-fields>div')?.classList.remove('anim-disabled');}
+  }
+  window.tc35EnableAnimProp=tc35EnableAnimProp;
+
+  function duration(){return Math.max(.01,Math.min(30,Number(document.querySelector('#animDuration')?.value)||Number(state.animation?.duration)||4));}
+  function clampTime(t){return Math.max(0,Math.min(duration(),Number.isFinite(Number(t))?Number(t):0));}
+  function readPlayhead(){
+    const range=document.querySelector('#animTime');
+    if(timeField?.dataset.manual==='1')return clampTime(timeField.value);
+    const n=Number(range?.value);
+    return clampTime(Number.isFinite(n)?n:Number(animationRuntime.time)||0);
+  }
+  function trackFor(layer){return animationTracks()[layer.id]||(animationTracks()[layer.id]=[]);}
+  function gradientTargets(layer){
+    const fill=layer?.fillMode==='gradient';
+    const stroke=layer?.strokeMode==='gradient';
+    if(fill)ensureGradientState(layer);
+    if(stroke)ensureStrokeGradientState(layer);
+    return {fill,stroke,valid:fill||stroke};
+  }
+  function reverseStateAt(track,time){
+    let value=false;
+    const keys=track.filter(k=>Object.prototype.hasOwnProperty.call(k.props||{},'gradientReverse')).slice().sort((a,b)=>Number(a.t)-Number(b.t));
+    for(const key of keys){if(Number(key.t)<=time+1e-9)value=!!key.props.gradientReverse;else break;}
+    return value;
+  }
+  function exactTrackKey(track,time){return track.find(k=>Math.abs(Number(k.t)-time)<.008)||null;}
+  function updateStatus(){
+    const layer=current();
+    if(!statusNode)return;
+    if(!layer){statusNode.textContent='レイヤーを選択してください';return;}
+    const track=animationTracks()[layer.id]||[];
+    const keys=track.filter(k=>Object.prototype.hasOwnProperty.call(k.props||{},'gradientReverse'));
+    const stateNow=reverseStateAt(track,Number(animationRuntime.time)||0);
+    statusNode.textContent=`PLAYHEAD ${((Number(animationRuntime.time)||0)).toFixed(2)}s  ·  ${stateNow?'REVERSED / ON':'NORMAL / OFF'}  ·  ${keys.length} REVERSE KEYS`;
+  }
+  function syncTimeField(t,manual=false){
+    if(!timeField)return;
+    timeField.value=clampTime(t).toFixed(2);
+    timeField.dataset.manual=manual?'1':'0';
+    timeField.max=String(duration());
+  }
+  function refreshAll(){
+    renderAnimationTimeline();
+    renderAnimPreview();
+    updateAnimPlayhead();
+    updateStatus();
+  }
+  function setReverseStateAt(time,value,notice=true){
+    const layer=current();
+    if(!layer){toast('先にグラデーションのあるレイヤーを選択してください');return false;}
+    const targets=gradientTargets(layer);
+    if(!targets.valid){toast('塗りまたは縁取りをグラデーションにしてください');return false;}
+    const t=Math.round(clampTime(time)*1000)/1000;
+    const track=trackFor(layer);
+    pushHistory();
+    let key=exactTrackKey(track,t);
+    if(!key){key={t,props:{},easing:'step'};track.push(key);}
+    key.props={...(key.props||{}),gradientReverse:!!value};
+    key.t=t;
+    key.easing='step';
+    track.sort((a,b)=>Number(a.t)-Number(b.t));
+    state.animation={...(state.animation||{}),duration:duration()};
+    tc35EnableAnimProp('gradientReverse');
+    if(valueField)valueField.checked=!!value;
+    animationRuntime.editedProps=null;
+    animationRuntime.playing=false;
+    cancelAnimationFrame(animationRuntime.raf);
+    animationRuntime.raf=0;
+    syncTimeField(t,false);
+    if(document.querySelector('#animTime'))document.querySelector('#animTime').value=String(t);
+    seekAnimation(t);
+    saveCurrentProject(true);
+    refreshAll();
+    if(notice)toast(`グラデーション反転キーを ${t.toFixed(2)}秒に追加 · ${value?'ON':'OFF'}`);
+    return true;
+  }
+  function insertToggleAt(time){
+    const layer=current();
+    if(!layer){toast('先にグラデーションのあるレイヤーを選択してください');return false;}
+    const targets=gradientTargets(layer);
+    if(!targets.valid){toast('塗りまたは縁取りをグラデーションにしてください');return false;}
+    const t=Math.round(clampTime(time)*1000)/1000;
+    const track=trackFor(layer);
+    const exact=track.find(k=>Math.abs(Number(k.t)-t)<.008&&Object.prototype.hasOwnProperty.call(k.props||{},'gradientReverse'));
+    const next=exact?!exact.props.gradientReverse:!reverseStateAt(track,t-0.0005);
+    return setReverseStateAt(t,next,true);
+  }
+  function deleteReverseAt(time){
+    const layer=current();if(!layer){toast('レイヤーを選択してください');return;}
+    const t=clampTime(time),track=trackFor(layer);
+    const key=track.find(k=>Object.prototype.hasOwnProperty.call(k.props||{},'gradientReverse')&&Math.abs(Number(k.t)-t)<.012);
+    if(!key){toast('この時刻にグラデーション反転キーはありません');return;}
+    pushHistory();delete key.props.gradientReverse;
+    if(!Object.keys(key.props||{}).length){const i=track.indexOf(key);if(i>=0)track.splice(i,1);}
+    animationRuntime.editedProps=null;
+    saveCurrentProject(true);
+    refreshAll();
+    toast(`グラデーション反転キーを ${Number(key.t).toFixed(2)}秒から削除しました`);
+  }
+
+  // Replace the broken 3.5 midpoint preset with an actual key at the playhead.
+  const baseApplyPreset=applyAnimationPreset;
+  applyAnimationPreset=function(kind){
+    if(kind==='gradientReverse'){insertToggleAt(readPlayhead());return;}
+    baseApplyPreset(kind);
+  };
+
+  // Add precise second entry plus quick ON/OFF/toggle/delete actions beside the property.
+  if(valueCell&&!valueCell.querySelector('.tc36-reverse-tools')){
+    const tools=document.createElement('div');
+    tools.className='tc36-reverse-tools';
+    tools.innerHTML=`<input class="field" id="tc36ReverseTime" type="number" min="0" step="0.01" aria-label="反転キー時刻（秒）"><button class="btn primary" type="button" data-tc36-reverse="toggle">⇄ 反転キー</button><button class="btn" type="button" data-tc36-reverse="on">ONキー</button><button class="btn" type="button" data-tc36-reverse="off">OFFキー</button><div class="tc36-wide"><button class="btn" type="button" data-tc36-reverse="delete">この時刻の反転キーを削除</button><button class="btn" type="button" data-tc36-reverse="playhead">再生ヘッド時刻を使う</button></div>`;
+    const note=valueCell.querySelector('.note');
+    if(note)note.insertAdjacentElement('afterend',tools);else valueCell.appendChild(tools);
+    statusNode=document.createElement('div');statusNode.className='tc36-reverse-status';statusNode.textContent='PLAYHEAD 0.00s · NORMAL / OFF · 0 REVERSE KEYS';
+    tools.insertAdjacentElement('afterend',statusNode);
+    const help=document.createElement('p');help.className='tc36-reverse-help';help.textContent='再生ヘッドを動かすか秒数を入力し、反転キーを追加。紫のキーをタイムライン上でドラッグすると時刻を微調整できます。ON/OFFは瞬時に切り替わります。';
+    statusNode.insertAdjacentElement('afterend',help);
+    timeField=tools.querySelector('#tc36ReverseTime');
+    syncTimeField(Number(animationRuntime.time)||0,false);
+    timeField.addEventListener('input',()=>{timeField.dataset.manual='1';});
+    timeField.addEventListener('change',()=>{const t=clampTime(timeField.value);syncTimeField(t,true);});
+    tools.addEventListener('click',e=>{
+      const b=e.target.closest('[data-tc36-reverse]');if(!b)return;
+      const mode=b.dataset.tc36Reverse;
+      const rangeValue=Number(document.querySelector('#animTime')?.value);const t=mode==='playhead'?clampTime(Number.isFinite(rangeValue)?rangeValue:Number(animationRuntime.time)||0):readPlayhead();
+      if(mode==='toggle')insertToggleAt(t);
+      else if(mode==='on')setReverseStateAt(t,true);
+      else if(mode==='off')setReverseStateAt(t,false);
+      else if(mode==='delete')deleteReverseAt(t);
+      else if(mode==='playhead'){syncTimeField(t,true);toast(`再生ヘッドの ${t.toFixed(2)}秒を指定しました`);}
+    });
+  }else{
+    timeField=document.querySelector('#tc36ReverseTime');
+    statusNode=valueCell?.querySelector('.tc36-reverse-status')||null;
+  }
+
+  // Changing the ON/OFF value in the regular property editor automatically enables its track.
+  if(valueField){
+    valueField.addEventListener('change',()=>{
+      tc35EnableAnimProp('gradientReverse');
+      const layer=current();if(layer){animationRuntime.editedProps=captureAnimationProps(layer);scheduleAnimPreview();renderAnimationTimeline();}
+    });
+  }
+
+  // Keep the exact-time input in sync when the playhead is moved by the range or timeline.
+  const baseSeek=seekAnimation;
+  seekAnimation=function(t){
+    baseSeek(t);
+    if(timeField&&timeField.dataset.manual!=='1')syncTimeField(animationRuntime.time,false);
+    updateStatus();
+  };
+  const basePlayheadUpdate=updateAnimPlayhead;
+  updateAnimPlayhead=function(){basePlayheadUpdate();if(timeField&&timeField.dataset.manual!=='1')syncTimeField(animationRuntime.time,false);updateStatus();};
+  document.querySelector('#animDuration')?.addEventListener('change',()=>{if(timeField){timeField.max=String(duration());syncTimeField(Math.min(Number(timeField.value)||0,duration()),timeField.dataset.manual==='1');}});
+
+  // Make the special key visibly different and identify its ON/OFF state in the key chips.
+  const baseTimelineRender=renderAnimationTimeline;
+  renderAnimationTimeline=function(){
+    baseTimelineRender();
+    const layer=current(),track=layer?(animationTracks()[layer.id]||[]):[];
+    document.querySelectorAll('.anim-key-dot[data-prop="gradientReverse"]').forEach(dot=>{
+      dot.classList.add('tc36-gradient-reverse');
+      const t=Number(dot.dataset.keyTime);
+      const key=track.find(k=>Math.abs(Number(k.t)-t)<.008&&Object.prototype.hasOwnProperty.call(k.props||{},'gradientReverse'));
+      if(key)dot.title=`グラデーション反転 · ${key.props.gradientReverse?'ON（逆向き）':'OFF（通常）'} · ${t.toFixed(2)}秒 · ドラッグで時刻変更`;
+    });
+    document.querySelector('.anim-track-lane[data-prop="gradientReverse"]')?.classList.add('tc36-gradient-reverse-lane');
+    const chips=document.querySelectorAll('#animKeyframeList .anim-key-chip');
+    chips.forEach(chip=>{
+      const m=chip.textContent.match(/([0-9]+(?:\.[0-9]+)?)s/);if(!m)return;
+      const t=Number(m[1]);const key=track.find(k=>Math.abs(Number(k.t)-t)<.008&&Object.prototype.hasOwnProperty.call(k.props||{},'gradientReverse'));
+      if(key)chip.textContent=`${t.toFixed(2)}s · ⇄ ${key.props.gradientReverse?'ON':'OFF'}`;
+    });
+    updateStatus();
+  };
+
+  // Give the quick preset a precise label and a useful hover hint.
+  const quick=document.querySelector('[data-anim-preset="gradientReverse"]');
+  if(quick){quick.textContent='⇄ 反転キー追加（現在時刻）';quick.title='再生ヘッド位置にグラデーション反転キーを追加。秒数指定も可能';}
+
+  // Existing imported 3.5 projects are read as-is. Their reversal key values are
+  // retained, and the corresponding animation property is checked when the layer is selected.
+  const baseTargetFields=animationTargetFields;
+  animationTargetFields=function(layer,props){
+    baseTargetFields(layer,props);
+    const hasKeys=!!layer&&(animationTracks()[layer.id]||[]).some(k=>Object.prototype.hasOwnProperty.call(k.props||{},'gradientReverse'));
+    const check=document.querySelector('[data-anim-prop="gradientReverse"]');
+    if(check&&hasKeys)check.checked=true;
+  };
+
+  // Keep the reverse status correct after the selected layer changes.
+  const baseLayerListRender=renderAnimLayerList;
+  renderAnimLayerList=function(){baseLayerListRender();updateStatus();};
+
+  // Expose a small, testable API for this feature without depending on browser globals.
+  window.TYPECRAFT_GRADIENT_REVERSE={
+    insertToggleAt, setReverseStateAt, deleteReverseAt, reverseStateAt,
+    reverseStops(stops){return (Array.isArray(stops)?stops:[]).map(stop=>({...stop,position:Math.max(0,Math.min(1,1-Number(stop.position||0)))})).sort((a,b)=>a.position-b.position);}
+  };
+
+  syncTimeField(Number(animationRuntime.time)||0,false);
+  updateStatus();
+})();
+
+// ================= TYPECRAFT 3.7 · Per-attribute keyframe equal distribution =================
+// Only the selected property's keys are moved. Other properties stored in the
+// same keyframe objects stay at their original times.
+(function installTypecraft37EqualDistribution(){
+  const style=document.createElement('style');
+  style.textContent=`
+    .anim-timeline-toolbar.tc37-toolbar{height:auto;min-height:43px;flex-wrap:wrap;padding-top:6px;padding-bottom:6px;row-gap:6px}
+    .anim-timeline-toolbar.tc37-toolbar .anim-key-actions{flex-wrap:wrap;justify-content:flex-end}
+    .tc37-distribute-controls{flex:1 0 100%;display:flex;align-items:center;gap:7px;min-width:0;padding:6px 8px;border:1px solid #353b46;border-radius:8px;background:linear-gradient(90deg,#24202d,#1d2027)}
+    .tc37-distribute-controls .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+    .tc37-distribute-title{font-size:8px;font-weight:800;letter-spacing:.08em;color:#cbb3f2;white-space:nowrap}
+    .tc37-distribute-select{width:190px;max-width:35%;min-width:120px;padding:7px 8px;font-size:9px;background:#171a21;border:1px solid #444957;border-radius:7px;color:#eceaf2}
+    .tc37-distribute-btn{padding:7px 11px;font-size:9px;white-space:nowrap}
+    .tc37-distribute-count{font:8px 'DM Mono',monospace;color:#c0a9e4;white-space:nowrap}
+    .tc37-distribute-help{margin-left:auto;font-size:8px;line-height:1.4;color:#9098a8;white-space:normal;text-align:right}
+    .tc37-distribute-controls:focus-within{border-color:#8c71b6}
+    @media(max-width:900px){.tc37-distribute-controls{flex-wrap:wrap}.tc37-distribute-help{flex:1 0 100%;margin-left:0;text-align:left}.tc37-distribute-select{max-width:none;flex:1}}
+  `;
+  document.head.appendChild(style);
+
+  const toolbar=document.querySelector('.anim-timeline-toolbar');
+  if(!toolbar)return;
+  toolbar.classList.add('tc37-toolbar');
+  const controls=document.createElement('div');
+  controls.className='tc37-distribute-controls';
+  controls.innerHTML=`<span class="tc37-distribute-title">KEYFRAME SPACING · 属性別均等配置</span><label class="sr-only" for="tc37DistributeProp">均等配置する属性</label><select class="tc37-distribute-select" id="tc37DistributeProp" aria-label="均等配置する属性"><option value="">属性を選択…</option></select><button type="button" class="btn primary tc37-distribute-btn" id="tc37DistributeButton" disabled>⇆ 均等配置</button><span class="tc37-distribute-count" id="tc37DistributeCount">0 KEYS</span><span class="tc37-distribute-help">最初と最後のキーは固定し、中間キーだけを等間隔にします。</span>`;
+  toolbar.appendChild(controls);
+  const select=controls.querySelector('#tc37DistributeProp');
+  const button=controls.querySelector('#tc37DistributeButton');
+  const countNode=controls.querySelector('#tc37DistributeCount');
+  let lastSelectedProp='';
+
+  const own=(obj,key)=>Object.prototype.hasOwnProperty.call(obj||{},key);
+  const labelFor=prop=>ANIM_PROP_LABELS[prop]||prop;
+  const trackForCurrent=()=>{const layer=current();return layer?(animationTracks()[layer.id]||(animationTracks()[layer.id]=[])):[]};
+  function propertyCounts(){
+    const counts=new Map();
+    trackForCurrent().forEach(key=>Object.keys(key.props||{}).forEach(prop=>counts.set(prop,(counts.get(prop)||0)+1)));
+    return counts;
+  }
+  function updateControls(){
+    const counts=propertyCounts();
+    const available=[...counts.keys()].sort((a,b)=>{
+      const ia=Object.keys(ANIM_PROP_LABELS).indexOf(a),ib=Object.keys(ANIM_PROP_LABELS).indexOf(b);
+      return (ia<0?9999:ia)-(ib<0?9999:ib)||labelFor(a).localeCompare(labelFor(b),'ja');
+    });
+    const previous=select.value||lastSelectedProp;
+    select.replaceChildren();
+    const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent=available.length?'属性を選択…':'対象レイヤーにキーがありません';select.appendChild(placeholder);
+    available.forEach(prop=>{const opt=document.createElement('option');opt.value=prop;opt.textContent=`${labelFor(prop)} · ${counts.get(prop)}キー`;select.appendChild(opt)});
+    let chosen=available.includes(previous)?previous:'';
+    if(!chosen)chosen=available.find(prop=>counts.get(prop)>=3)||available[0]||'';
+    select.value=chosen;lastSelectedProp=chosen;
+    const n=chosen?(counts.get(chosen)||0):0;
+    countNode.textContent=`${n} KEYS`;
+    button.disabled=!chosen||n<3;
+    button.title=!chosen?'属性キーがありません':n<3?'均等配置には同じ属性のキーが3個以上必要です':'最初と最後のキー時刻を固定して中間キーを均等配置';
+  }
+
+  function calculateTimes(entries){
+    const getKey=entry=>entry&&entry.key?entry.key:entry;
+    const first=Number(getKey(entries[0]).t),last=Number(getKey(entries[entries.length-1]).t);
+    const span=last-first;
+    return entries.map((entry,index)=>index===0?first:index===entries.length-1?last:Number((first+span*index/(entries.length-1)).toFixed(6)));
+  }
+
+  // Evaluate each property's own key sequence instead of interpolating across
+  // unrelated property keys. This is required when one lane is moved independently.
+  function tc37AnimatedPropsFromTrack(track,time,defaultEasing='linear'){
+    const sorted=(Array.isArray(track)?track:[]).slice().sort((a,b)=>Number(a.t)-Number(b.t));
+    const properties=new Set();
+    sorted.forEach(key=>Object.keys(key.props||{}).forEach(prop=>properties.add(prop)));
+    const result={},at=Number.isFinite(Number(time))?Number(time):0;
+    for(const prop of properties){
+      const keys=sorted.filter(key=>own(key.props,prop));
+      if(!keys.length)continue;
+      if(prop==='gradientReverse'){
+        let prior=null;
+        for(const key of keys){if(Number(key.t)<=at+1e-9)prior=key;else break;}
+        result[prop]=prior?!!prior.props[prop]:false;
+        continue;
+      }
+      const first=keys[0],last=keys[keys.length-1];
+      if(at<Number(first.t))continue;
+      if(at>=Number(last.t)){result[prop]=last.props[prop];continue;}
+      let left=first,right=last;
+      for(let i=0;i<keys.length-1;i++){
+        if(at>=Number(keys[i].t)&&at<Number(keys[i+1].t)){left=keys[i];right=keys[i+1];break;}
+      }
+      const span=Math.max(.000001,Number(right.t)-Number(left.t));
+      const progress=Math.max(0,Math.min(1,(at-Number(left.t))/span));
+      const easing=left.easings?.[prop]||left.easing||defaultEasing||'linear';
+      result[prop]=mixAnimationValue(left.props[prop],right.props[prop],easeAnimationProgress(progress,easing),prop);
+    }
+    return result;
+  }
+
+  function equalizePropertyTrack(track,prop){
+    if(!Array.isArray(track)||!prop)return {ok:false,reason:'no-target',moved:0};
+    const entries=track.filter(key=>own(key.props,prop)).slice().sort((a,b)=>Number(a.t)-Number(b.t));
+    if(entries.length<3)return {ok:false,reason:'need-three',count:entries.length,moved:0};
+    const times=calculateTimes(entries);
+    let moved=0;
+    entries.forEach((entry,index)=>{if(Math.abs(Number(entry.t)-times[index])>0.0000005)moved++});
+    if(!moved)return {ok:true,reason:'already-even',count:entries.length,moved:0,start:times[0],end:times[times.length-1]};
+
+    // Snapshot values before detaching the selected property from shared key objects.
+    const snapshots=entries.map(entry=>({
+      value:entry.props[prop],
+      easing:entry.easings?.[prop]||entry.easing||'linear',
+      time:Number(entry.t)
+    }));
+
+    // Detach only this property; leave every other property at its old time.
+    entries.forEach(entry=>{
+      delete entry.props[prop];
+      if(!Object.keys(entry.props||{}).length){const i=track.indexOf(entry);if(i>=0)track.splice(i,1);}
+    });
+
+    // Reinsert at the evenly spaced times, merging into an unrelated key when
+    // it already exists at exactly that time.
+    snapshots.forEach((snapshot,index)=>{
+      const t=times[index];
+      let destination=track.find(key=>Math.abs(Number(key.t)-t)<0.0000005);
+      if(!destination){destination={t,props:{},easing:snapshot.easing||'linear'};track.push(destination);}
+      else destination.easings={...(destination.easings||{}),[prop]:snapshot.easing||'linear'};
+      destination.props={...(destination.props||{}),[prop]:snapshot.value};
+    });
+    track.sort((a,b)=>Number(a.t)-Number(b.t));
+    if(typeof animTrackSortCache!=='undefined'&&animTrackSortCache?.delete)animTrackSortCache.delete(track);
+    return {ok:true,reason:'distributed',count:entries.length,moved,start:times[0],end:times[times.length-1],times};
+  }
+
+  function runDistribution(){
+    const layer=current();
+    if(!layer){toast('先にアニメーションするレイヤーを選択してください');return;}
+    const prop=select.value;
+    if(!prop){toast('均等配置する属性を選択してください');return;}
+    const track=animationTracks()[layer.id]||(animationTracks()[layer.id]=[]);
+    const count=track.filter(key=>own(key.props,prop)).length;
+    if(count<3){toast(`${labelFor(prop)}のキーが${count}個です。均等配置には3個以上必要です。`);return;}
+    // Calculate first so Undo is not polluted when the keys are already even.
+    const sorted=track.filter(key=>own(key.props,prop)).slice().sort((a,b)=>Number(a.t)-Number(b.t));
+    const targetTimes=calculateTimes(sorted.map(key=>({key})));
+    const wouldMove=sorted.some((key,index)=>Math.abs(Number(key.t)-targetTimes[index])>0.0000005);
+    if(!wouldMove){toast(`${labelFor(prop)}のキーはすでに均等配置されています`);return;}
+    pushHistory();
+    const result=equalizePropertyTrack(track,prop);
+    if(!result.ok){toast('均等配置できませんでした');return;}
+    animationRuntime.editedProps=null;
+    if(typeof saveCurrentProject==='function')saveCurrentProject(true);
+    renderAnimationTimeline();
+    renderAnimPreview();
+    updateAnimPlayhead();
+    updateControls();
+    toast(`${labelFor(prop)}の${result.count}個のキーを均等配置しました · ${result.start.toFixed(2)}s〜${result.end.toFixed(2)}s`);
+  }
+
+  select.addEventListener('change',()=>{lastSelectedProp=select.value;updateControls()});
+  button.addEventListener('click',runDistribution);
+
+  // Refresh the selector whenever the selected layer, enabled property tracks,
+  // or keyframe data changes.
+  const baseRender=renderAnimationTimeline;
+  renderAnimationTimeline=function(){baseRender();updateControls();};
+  const baseRenderLayerList=renderAnimLayerList;
+  renderAnimLayerList=function(){baseRenderLayerList();updateControls();};
+
+  const tc37PriorAnimatedPropsAt=animatedPropsAt;
+  animatedPropsAt=function(layer,time){
+    if(!layer)return {};
+    return tc37AnimatedPropsFromTrack(animationTracks()[layer.id]||[],time,state.animation?.easing||'linear');
+  };
+
+  window.TYPECRAFT_EQUAL_DISTRIBUTE={
+    equalizePropertyTrack,
+    evaluateTrackProperties:tc37AnimatedPropsFromTrack,
+    preview(track,prop){
+      const entries=(Array.isArray(track)?track:[]).filter(key=>own(key.props,prop)).slice().sort((a,b)=>Number(a.t)-Number(b.t));
+      if(entries.length<3)return {count:entries.length,times:entries.map(key=>key.t)};
+      return {count:entries.length,times:calculateTimes(entries.map(key=>({key})))};
+    }
+  };
+  updateControls();
+})();
 
 })();
 </script>
