@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#101114">
-<meta name="description" content="TYPECRAFT 3.7 — editable gradient reversal and per-property keyframe distribution">
-<title>TYPECRAFT — Typography Studio 3.7</title>
+<meta name="description" content="TYPECRAFT 3.8 — editable keyframe values and clearer timeline controls">
+<title>TYPECRAFT — Typography Studio 3.8</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap');
 :root{--bg:#101114;--panel:#17191e;--panel2:#1d2026;--panel3:#242831;--line:#2c3039;--text:#f2f1ed;--muted:#858b98;--gold:#c8a96b;--gold2:#e4cc91;--blue:#8db8ff;--green:#72c9a6;--danger:#df7777;--r:12px;--shadow:0 18px 50px #0008}
@@ -186,6 +186,54 @@ body:not(.authenticated) .app{display:none}
 @media(max-width:760px){.workspace{grid-template-columns:1fr;grid-template-rows:minmax(180px,32vh) minmax(280px,1fr) minmax(220px,34vh)}.left-panel,.right-panel{border:0}.left-panel{border-bottom:1px solid var(--line)}.right-panel{border-top:1px solid var(--line)}.top-actions .btn{padding:7px 8px;font-size:9px}.toolbar{overflow-x:auto;white-space:nowrap}.gradient-swatches{grid-template-columns:repeat(4,minmax(0,1fr))}}
 
 </style>
+
+<style id="typecraft-38-keyframe-ui">
+/* Selected keyframe value editor */
+.tc38-key-inspector{border:1px solid #65538a;background:linear-gradient(145deg,#272237,#1d2029 70%);border-radius:11px;padding:11px;margin:0 0 11px;box-shadow:inset 0 1px #ffffff08,0 8px 22px #0002}
+.tc38-inspector-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+.tc38-inspector-head strong{font-size:10px;letter-spacing:.07em;color:#f0e9ff}
+.tc38-inspector-badge{font:7px 'DM Mono',monospace;letter-spacing:.06em;color:#d8c5ff;border:1px solid #765e9f;background:#3b2f50;border-radius:99px;padding:4px 7px}
+.tc38-inspector-empty{display:flex;flex-direction:column;gap:5px;padding:10px;border:1px dashed #62577a;border-radius:8px;background:#171720;color:#bcb4cd;font-size:9px;line-height:1.6}
+.tc38-inspector-empty b{color:#f0e8ff;font-size:10px}
+.tc38-inspector-selected{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 9px;border-radius:8px;background:#171720;margin-bottom:8px}
+.tc38-inspector-selected b{font-size:10px;color:#e7d8ff}.tc38-inspector-selected span{font:9px 'DM Mono',monospace;color:#c8b4ef;text-align:right}
+.tc38-value-row{display:grid;grid-template-columns:minmax(90px,.8fr) minmax(0,1.2fr);gap:8px;align-items:start;margin:7px 0;color:#c5cbd5;font-size:9px}
+.tc38-value-label{padding-top:8px;line-height:1.35}.tc38-value-control{min-width:0;display:flex;flex-direction:column;gap:4px}.tc38-value-control .field{width:100%;min-width:0;padding:7px 8px;font-size:10px}.tc38-value-control small{font-size:7px;color:#8f97a5;line-height:1.35}
+.tc38-bool-input{width:19px;height:19px;accent-color:#bd9bef;align-self:flex-start;margin:4px 0}
+.tc38-color-input{width:54px;height:31px;border:1px solid #55506a;border-radius:7px;background:#171720;padding:3px}
+.tc38-same-key{display:flex;flex-wrap:wrap;gap:5px;border-top:1px solid #ffffff12;padding-top:8px;margin-top:9px}
+.tc38-same-key>span{flex:1 0 100%;font-size:8px;color:#9691a5;margin-bottom:1px}
+.tc38-attr-chip{border:1px solid #4a455d;background:#22212d;border-radius:6px;color:#bdb5cf;font-size:7px;padding:5px 7px;max-width:100%}
+.tc38-attr-chip.active{border-color:#ba9be9;background:#3a2d50;color:#f1e7ff}
+.tc38-inspector-actions{display:flex;gap:6px;margin-top:9px}.tc38-inspector-actions .btn{flex:1;font-size:8px;padding:7px 8px;white-space:normal}.tc38-inspector-actions .btn.danger{border-color:#71434c;color:#ffb8c1;background:#321e25}
+.tc38-readonly-value{white-space:pre-wrap;overflow-wrap:anywhere;color:#ddd;font-size:8px}
+/* Timeline semantics and alignment */
+.anim-timeline-body{grid-template-columns:205px minmax(0,1fr)!important}
+.anim-track-labels{overflow-x:hidden!important;overflow-y:auto!important;scrollbar-width:thin;scrollbar-color:#48505d #20242b}
+.anim-track-name.tc38-track-name{height:42px;min-height:42px;gap:6px;padding:3px 8px;background:#20242b}
+.tc38-track-name input{flex:none;width:13px!important;height:13px!important}
+.tc38-track-copy{display:flex!important;flex-direction:column;justify-content:center;gap:3px;min-width:0;flex:1;line-height:1.15}
+.tc38-track-copy b{font-size:9px;font-weight:700;color:#e4e7ed;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tc38-track-desc{font:7px 'DM Mono',monospace;color:#8290a1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tc38-track-name>small:not(.tc38-track-desc){font:7px 'DM Mono',monospace;color:#bda7e7;margin-left:auto;white-space:nowrap}
+.anim-track-lane{height:42px!important}
+.anim-key-dot{top:14px!important}
+.anim-key-dot.tc38-selected{z-index:5!important;background:#fff!important;border-color:#c7a3ff!important;box-shadow:0 0 0 5px #b98cff55,0 0 14px #d4b8ff!important;width:15px;height:15px}
+.anim-key-dot.tc38-selected:after{content:'';position:absolute;inset:-5px;border:1px solid #d5b9ff;border-radius:4px;transform:rotate(0deg)}
+.tc38-key-chip{display:flex;align-items:center;gap:8px;text-align:left;padding:5px 8px;max-width:320px;min-width:90px}
+.tc38-key-chip strong{font:8px 'DM Mono',monospace;white-space:nowrap;color:#f0d9a6}
+.tc38-key-chip span{font:7px 'DM Mono',monospace;color:#aab2c0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tc38-key-chip.active{border-color:#c29bef;background:#30243e;box-shadow:inset 0 0 0 1px #c29bef33}
+.tc38-key-chip.active strong{color:#e5d0ff}
+.tc38-empty-keys{font-size:8px;color:#939baa;padding:5px 2px}
+.anim-timeline-footer{height:auto!important;min-height:48px;padding:6px 10px!important;align-items:flex-start!important;flex-wrap:wrap}
+.anim-timeline-footer .anim-key-list{max-width:100%!important;width:100%;display:flex;flex-wrap:wrap;gap:5px;max-height:36px;overflow:auto!important}
+.anim-timeline-footer #gifStatus{max-width:100%!important;width:100%;font-size:7px!important;white-space:normal!important;line-height:1.35}
+.anim-timeline-title span{font-size:7px!important;letter-spacing:0!important}
+@media(max-width:1100px){.anim-timeline-body{grid-template-columns:180px minmax(0,1fr)!important}.anim-track-name.tc38-track-name{padding-left:6px;padding-right:5px}}
+@media(max-width:760px){.anim-timeline-body{grid-template-columns:155px minmax(0,1fr)!important}.tc38-value-row{grid-template-columns:1fr;gap:4px}.tc38-value-label{padding-top:0}}
+</style>
+
 </head>
 <body>
 <div id="accountGate"><div class="gate-card"><div class="gate-logo">T</div><h1>TYPECRAFT</h1><p>TYPOGRAPHY STUDIO<br>文字デザインを、もっと自由に。</p><div class="control-group"><label class="control-label" for="accountName">アカウント名</label><input class="field" id="accountName" maxlength="24" placeholder="表示名を入力"></div><button class="btn primary" id="accountEnter">ログイン / アカウント作成</button><p class="gate-note">このバージョンはアカウントとプロジェクトをこのブラウザ内に保存します。オンラインアカウント・クラウド同期ではありません。</p></div></div>
@@ -193,7 +241,7 @@ body:not(.authenticated) .app{display:none}
 <div id="contextMenu"><button class="ctx-item" data-action="rename">名前を変更 <span>F2</span></button><button class="ctx-item" data-action="duplicate">複製 <span>Ctrl+D</span></button><button class="ctx-item" data-action="copyStyle">スタイルをコピー</button><button class="ctx-item" data-action="pasteStyle">スタイルを貼り付け</button><div class="ctx-sep"></div><button class="ctx-item" data-action="front">最前面へ</button><button class="ctx-item" data-action="back">最背面へ</button><div class="ctx-sep"></div><button class="ctx-item" data-action="lock">ロック / 解除</button><button class="ctx-item" data-action="hide">表示 / 非表示</button><div class="ctx-sep"></div><button class="ctx-item danger" data-action="delete">削除 <span>Delete</span></button></div>
 <div class="app">
   <header class="topbar">
-    <div class="brand"><div class="brand-mark">T</div><div><div class="brand-name">TYPECRAFT</div><div class="brand-sub">TYPOGRAPHY STUDIO · VERSION 3.7</div></div></div>
+    <div class="brand"><div class="brand-mark">T</div><div><div class="brand-name">TYPECRAFT</div><div class="brand-sub">TYPOGRAPHY STUDIO · VERSION 3.8</div></div></div>
     <div class="top-status" id="fontStatus">FONT LIBRARY READY</div><div class="save-indicator" id="saveStatus" title="このブラウザのローカルストレージへ自動保存">● LOCAL STORAGE · READY</div>
     <div class="top-actions">
       <button class="btn icon" id="undoBtn" title="元に戻す (Ctrl+Z)">↶</button>
@@ -256,7 +304,7 @@ body:not(.authenticated) .app{display:none}
 <div class="modal-backdrop" id="shortcutsModal"><div class="modal"><h3>キーボードショートカット</h3><div class="shortcut-list"><div><span>元に戻す</span><kbd>Ctrl / ⌘ + Z</kbd></div><div><span>やり直す</span><kbd>Ctrl / ⌘ + Y</kbd></div><div><span>複製</span><kbd>Ctrl / ⌘ + D</kbd></div><div><span>選択レイヤーをフォルダー化</span><kbd>Ctrl / ⌘ + G</kbd></div><div><span>削除</span><kbd>Delete</kbd></div><div><span>1px移動 / Shiftで10px</span><kbd>矢印キー</kbd></div><div><span>プロジェクト読込</span><kbd>Shift + O</kbd></div><div><span>名前変更</span><kbd>F2</kbd></div><div><span>コンテキストメニュー</span><kbd>右クリック</kbd></div></div><div class="modal-actions"><button class="btn primary" id="closeShortcuts">閉じる</button></div></div></div>
 
 <div class="modal-backdrop" id="helpModal"><div class="help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
-  <div class="help-head"><div><div class="help-eyebrow">TYPECRAFT · TYPOGRAPHY STUDIO</div><h2 id="helpTitle">ガイド & アップデート</h2><p>使い方、便利な操作、バージョン情報をまとめています。</p></div><div class="help-head-side"><span class="version-pill">VERSION 3.7</span><button class="btn icon" id="closeHelp" aria-label="閉じる">✕</button></div></div>
+  <div class="help-head"><div><div class="help-eyebrow">TYPECRAFT · TYPOGRAPHY STUDIO</div><h2 id="helpTitle">ガイド & アップデート</h2><p>使い方、便利な操作、バージョン情報をまとめています。</p></div><div class="help-head-side"><span class="version-pill">VERSION 3.8</span><button class="btn icon" id="closeHelp" aria-label="閉じる">✕</button></div></div>
   <div class="help-tabs"><button class="tab active" data-help-tab="start">はじめかた</button><button class="tab" data-help-tab="features">機能ガイド</button><button class="tab" data-help-tab="updates">更新履歴</button><button class="tab" data-help-tab="save">保存・FAQ</button></div>
   <div class="help-content">
     <section data-help-panel="start">
@@ -278,7 +326,15 @@ body:not(.authenticated) .app{display:none}
       </div>
     </section>
     <section data-help-panel="updates" hidden>
-      <div class="release-current"><span class="version-pill">LATEST · 3.7</span><strong>属性ごとのキーフレーム均等配置を追加</strong><ul><li>Animation Studioのタイムラインに「均等配置する属性」セレクターと「均等配置」ボタンを追加。</li><li>X・Y・位置・色・透明度・グラデーション反転など、選んだ属性のキーだけを均等配置できます。</li><li>最初と最後のキー時刻は固定し、その間のキーを等間隔に再配置します。</li><li>同じ時刻にある別属性のキーは移動・削除せず、対象属性だけを分離して再配置します。</li><li>各属性を独立したキー列として補間するように修正。Xのキーを移動しても、Yなど別属性の動きが不自然に途切れません。</li><li>グラデーション反転のON/OFFキーにも対応。瞬間切替の状態を維持したまま時刻を整えられます。</li><li>キー数・対象属性の表示を追加し、3個以上のキーがある属性を選ぶと実行できます。</li></ul><strong>3.6 の更新</strong><ul><li>グラデーション反転を固定位置のプリセットではなく、再生ヘッドの任意時刻に追加できる専用キーフレームへ変更。</li><li>秒数指定、ON／OFFキー、削除、ドラッグによる時刻変更に対応。</li><li>反転はキーに到達した瞬間に切り替わるステップ状態として保持。</li></ul><strong>3.5 の更新</strong><ul><li>グラデーションの色ストップ・透明度ストップを瞬時に逆向きへ切り替える基本機能を追加。</li><li>アニメーションプレビューとGIF書き出しに反転状態を反映。</li></ul><strong>3.4 の更新</strong><ul><li>文字色が赤→橙→黄→緑→水色→青→紫→赤と循環するレインボー文字プリセットを追加。</li><li>枠線色のレインボー循環と、赤→紫→赤のアウトラインループを追加。</li><li>グラデーションの色変化に加え、左右・上下の位置反転往復、XY反転、左右・上下ミラーを追加。</li><li>オービット、エラスティック、ハートビート、グローパルス、フラッシュなどのモーションプリセットを追加。</li><li>GIF.jsと外部Workerへの依存を撤廃。内蔵GIFエンコーダーでGIFを書き出せるように修正。</li><li>GIF書き出しにマスク合成を反映し、進捗表示・画像読み込み待機・解像度の自動調整を追加。</li></ul></div>
+      <div class="release-current"><span class="version-pill">LATEST · 3.8</span><strong>キーフレームの値を直接編集できるインスペクターを追加</strong><ul>
+<li>タイムライン上のひし形キーをクリックすると、その属性のキー値を専用パネルで直接編集できます。</li>
+<li>透明度は 0〜100% 表示で数値入力可能。内部値との変換も自動で行います。</li>
+<li>X・Y・幅・高さ・回転・Scale・文字サイズ・グラデーション角度・色・反転ON/OFFなど、選択したキーに保存された値をその場で編集できます。</li>
+<li>キーの時刻も数値入力できます。属性単位で時刻を動かすため、同じ時刻にある別属性のキーは動きません。</li>
+<li>同じキー時刻に含まれる属性を一覧表示。タイムライン下部にも時刻と値の概要を表示します。</li>
+<li>左側は「新しいキーに記録する属性」、右側のひし形は「記録済みキーフレーム」と役割を明示。属性名・単位・キー数を表示します。</li>
+<li>左右のトラック一覧とタイムラインを縦スクロール連動。選択中のキーを強調表示します。</li>
+</ul><ul><li>Animation Studioのタイムラインに「均等配置する属性」セレクターと「均等配置」ボタンを追加。</li><li>X・Y・位置・色・透明度・グラデーション反転など、選んだ属性のキーだけを均等配置できます。</li><li>最初と最後のキー時刻は固定し、その間のキーを等間隔に再配置します。</li><li>同じ時刻にある別属性のキーは移動・削除せず、対象属性だけを分離して再配置します。</li><li>各属性を独立したキー列として補間するように修正。Xのキーを移動しても、Yなど別属性の動きが不自然に途切れません。</li><li>グラデーション反転のON/OFFキーにも対応。瞬間切替の状態を維持したまま時刻を整えられます。</li><li>キー数・対象属性の表示を追加し、3個以上のキーがある属性を選ぶと実行できます。</li></ul><strong>3.6 の更新</strong><ul><li>グラデーション反転を固定位置のプリセットではなく、再生ヘッドの任意時刻に追加できる専用キーフレームへ変更。</li><li>秒数指定、ON／OFFキー、削除、ドラッグによる時刻変更に対応。</li><li>反転はキーに到達した瞬間に切り替わるステップ状態として保持。</li></ul><strong>3.5 の更新</strong><ul><li>グラデーションの色ストップ・透明度ストップを瞬時に逆向きへ切り替える基本機能を追加。</li><li>アニメーションプレビューとGIF書き出しに反転状態を反映。</li></ul><strong>3.4 の更新</strong><ul><li>文字色が赤→橙→黄→緑→水色→青→紫→赤と循環するレインボー文字プリセットを追加。</li><li>枠線色のレインボー循環と、赤→紫→赤のアウトラインループを追加。</li><li>グラデーションの色変化に加え、左右・上下の位置反転往復、XY反転、左右・上下ミラーを追加。</li><li>オービット、エラスティック、ハートビート、グローパルス、フラッシュなどのモーションプリセットを追加。</li><li>GIF.jsと外部Workerへの依存を撤廃。内蔵GIFエンコーダーでGIFを書き出せるように修正。</li><li>GIF書き出しにマスク合成を反映し、進捗表示・画像読み込み待機・解像度の自動調整を追加。</li></ul></div>
       <div class="release-item"><span>3.3</span><div><strong>テキスト編集とワークスペース</strong><p>テキスト編集の不具合修正、旧テキストレイヤー診断・復旧、折り畳みグラデーションプリセット、使い方ガイドを追加。</p></div></div>
       <div class="release-item"><span>3.2</span><div><strong>フォルダーと数値入力</strong><p>入れ子フォルダー、複数選択、ドラッグ移動、数値入力欄、フォント読込の改善。</p></div></div>
       <div class="release-item"><span>3.1</span><div><strong>アニメーション・デザイン機能</strong><p>アニメーション編集、キーフレーム、グラデーション編集、画像・図形の装飾とマスク機能を拡張。</p></div></div>
@@ -288,14 +344,14 @@ body:not(.authenticated) .app{display:none}
       <div class="help-faq"><article><strong>作品はどこに保存される？</strong><p>編集中の変更は、このブラウザのLocalStorageに自動保存されます。同じブラウザ・同じ端末で使えますが、別端末へは同期されません。</p></article><article><strong>バックアップを作るには？</strong><p>右上の「プロジェクト保存」で .typecraft ファイルをダウンロードしてください。別の端末やブラウザでは「プロジェクト読込」から読み込めます。</p></article><article><strong>フォントが変わらない・読み込めない</strong><p>フォントはGoogle Fontsから読み込むため、ネット接続やブラウザの制限によって代替フォントになる場合があります。右上のフォント状態表示も確認してください。</p></article><article><strong>古いプロジェクトは使える？</strong><p>旧バージョンの .typecraft / JSON の読み込みに対応しています。大切な作品は、読み込み前に元ファイルを残しておいてください。</p></article><article><strong>画像を書き出すには？</strong><p>PNGは透過に対応、WebPはファイルサイズを抑えられます。SVGは現在、PNG画像を埋め込む形式です。</p></article></div>
     </section>
   </div>
-  <div class="help-footer"><span>TYPECRAFT 3.7 · LOCAL PROJECT WORKSPACE</span><button class="btn primary" id="closeHelpFooter">閉じる</button></div>
+  <div class="help-footer"><span>TYPECRAFT 3.8 · LOCAL PROJECT WORKSPACE</span><button class="btn primary" id="closeHelpFooter">閉じる</button></div>
 </div></div>
 
 <div class="modal-backdrop" id="resizeModal"><div class="modal"><h3>キャンバスサイズ</h3><p>幅と高さをピクセル単位で指定します。</p><div class="field-row"><div><label class="control-label">幅（px）</label><input class="field" id="customW" type="number" min="64" max="6000" value="1600"></div><div><label class="control-label">高さ（px）</label><input class="field" id="customH" type="number" min="64" max="6000" value="900"></div></div><div class="modal-actions"><button class="btn" id="cancelResize">キャンセル</button><button class="btn primary" id="confirmResize">適用</button></div></div></div>
 <div class="modal-backdrop anim-backdrop" id="animationModal">
 <section class="anim-app" role="dialog" aria-label="Animation Studio">
   <header class="anim-topbar">
-    <div class="anim-brand"><div class="anim-brand-mark">✦</div><div><div class="anim-brand-title">ANIMATION STUDIO 3.7</div><div class="anim-brand-sub">MOTION DESIGN WORKSPACE</div></div></div>
+    <div class="anim-brand"><div class="anim-brand-mark">✦</div><div><div class="anim-brand-title">ANIMATION STUDIO 3.8</div><div class="anim-brand-sub">MOTION DESIGN WORKSPACE</div></div></div>
     <div class="anim-target"><span>ACTIVE OBJECT</span><strong id="animTargetName">未選択</strong></div>
     <div class="anim-top-controls">
       <label class="anim-top-field"><span>DURATION</span><input class="field" id="animDuration" type="number" min="1" max="30" value="4"><b>SEC</b></label>
@@ -2457,6 +2513,310 @@ if(tc34OldGifButton){const tc34NewGifButton=tc34OldGifButton.cloneNode(true);tc3
     }
   };
   updateControls();
+})();
+
+
+// ================= TYPECRAFT 3.8 · Keyframe value inspector + timeline clarity =================
+(function installTypecraft38KeyframeInspector(){
+  const own=(obj,key)=>Object.prototype.hasOwnProperty.call(obj||{},key);
+  const percentProps=new Set(['opacity','fillOpacity','strokeOpacity','tintOpacity','textBgOpacity']);
+  const boolProps=new Set(['gradientReverse','flipX','flipY','italic','charWave']);
+  const colorProps=new Set(['color','fill','stroke','textBgColor','gradientStartColor','gradientEndColor','strokeGradientStartColor','strokeGradientEndColor']);
+  const labels={
+    x:'位置 X',y:'位置 Y',w:'幅',h:'高さ',opacity:'レイヤー透明度',fillOpacity:'塗り透明度',
+    strokeOpacity:'枠線透明度',tintOpacity:'Tint透明度',textBgOpacity:'背景透明度',
+    rotation:'回転',scale:'Scale',scaleX:'Scale X',scaleY:'Scale Y',gradientReverse:'グラデーション反転',
+    flipX:'左右反転',flipY:'上下反転',gradientAngle:'グラデーション角度',strokeGradientAngle:'枠線グラデーション角度',
+    fontSize:'文字サイズ',fontWeight:'文字の太さ',letterSpacing:'文字間隔',lineHeight:'行間',
+    reveal:'文字の表示率',strokeWidth:'枠線の太さ',blur:'ぼかし',glowBlur:'発光',shadowBlur:'影のぼかし',
+    shadowX:'影 X',shadowY:'影 Y',gradientOffsetX:'Gradient Offset X',gradientOffsetY:'Gradient Offset Y',
+    strokeGradientOffsetX:'枠線 Gradient Offset X',strokeGradientOffsetY:'枠線 Gradient Offset Y',
+    text:'テキスト内容',fontFamily:'フォント',align:'文字揃え',fillMode:'塗り方式',strokeMode:'枠線方式'
+  };
+  try{Object.assign(ANIM_PROP_LABELS,labels)}catch(e){}
+  try{Object.assign(ANIM_PROP_CATEGORY,{gradientReverse:'color',flipX:'transform',flipY:'transform',strokeGradientAngle:'color',strokeGradientOffsetX:'color',strokeGradientOffsetY:'color'})}catch(e){}
+
+  let selected=null; // {layerId,key,prop}
+  let syncingScroll=false;
+  const labelFor=prop=>labels[prop]||ANIM_PROP_LABELS?.[prop]||prop;
+  const unitFor=prop=>{
+    if(['x','y','w','h','fontSize','strokeWidth','letterSpacing','shadowX','shadowY','textBgPadding'].includes(prop))return 'px';
+    if(['rotation','gradientAngle','strokeGradientAngle'].includes(prop))return '°';
+    if(['scale','scaleX','scaleY'].includes(prop))return '×';
+    if(percentProps.has(prop))return '%';
+    return '';
+  };
+  const formatValue=(prop,value)=>{
+    if(percentProps.has(prop)&&Number.isFinite(Number(value)))return Math.round(Number(value)*1000)/10+'%';
+    if(typeof value==='boolean')return value?'ON':'OFF';
+    if(value===null||value===undefined)return '—';
+    if(typeof value==='number')return `${Number(value.toFixed(3))}${unitFor(prop)?' '+unitFor(prop):''}`;
+    if(typeof value==='string')return value.length>28?value.slice(0,25)+'…':value;
+    return '[値]';
+  };
+  const propertyHint=prop=>{
+    if(percentProps.has(prop))return '0〜100% · 数値で入力';
+    if(['gradientReverse','flipX','flipY','italic','charWave'].includes(prop))return 'ON / OFF · キー位置で瞬時に切替';
+    if(['x','y','w','h'].includes(prop))return 'px · 数値で入力';
+    if(['rotation','gradientAngle','strokeGradientAngle'].includes(prop))return '度数 · 数値で入力';
+    if(['scale','scaleX','scaleY'].includes(prop))return '倍率 · 1.00 = 100%';
+    if(colorProps.has(prop))return 'カラー値 · カラーピッカーで編集';
+    if(prop==='text')return 'このキーに保存する文字列';
+    return 'このキーフレームに保存される値';
+  };
+  function layerTrack(layerId){return (animationTracks()[layerId]||[])}
+  function resolveSelected(){
+    if(!selected)return null;
+    const layer=current();
+    if(!layer||layer.id!==selected.layerId){selected=null;return null;}
+    const track=layerTrack(layer.id);
+    let key=selected.key&&track.includes(selected.key)&&own(selected.key.props,selected.prop)?selected.key:null;
+    if(!key)key=track.find(k=>Math.abs(Number(k.t)-Number(selected.time||0))<.001&&own(k.props,selected.prop))||null;
+    if(!key){selected=null;return null;}
+    selected.key=key;selected.time=Number(key.t);
+    return {layer,key,prop:selected.prop,track};
+  }
+  function updateDotSelection(){
+    document.querySelectorAll('#animTimelineTracks .anim-key-dot').forEach(dot=>{
+      const on=!!selected&&dot.dataset.prop===selected.prop&&Math.abs(Number(dot.dataset.keyTime)-Number(selected.key?.t))<.001;
+      dot.classList.toggle('tc38-selected',on);
+      if(on)dot.setAttribute('aria-current','true');else dot.removeAttribute('aria-current');
+    });
+  }
+  function renderKeyChips(){
+    const host=$('#animKeyframeList');if(!host)return;
+    const layer=current(),keys=layer?layerTrack(layer.id).filter(k=>Object.keys(k.props||{}).length).slice().sort((a,b)=>Number(a.t)-Number(b.t)):[];
+    host.replaceChildren();
+    if(!keys.length){const empty=document.createElement('span');empty.className='tc38-empty-keys';empty.textContent='◆ キーなし · 再生位置を決めて「キーフレーム追加」を押してください';host.appendChild(empty);return;}
+    keys.forEach(key=>{
+      const props=Object.keys(key.props||{});
+      const preferred=selected&&selected.layerId===layer.id&&props.includes(selected.prop)?selected.prop:props[0];
+      const button=document.createElement('button');button.type='button';button.className='anim-key-chip tc38-key-chip';
+      if(selected&&selected.layerId===layer.id&&selected.key===key)button.classList.add('active');
+      const time=document.createElement('strong');time.textContent='◆ '+Number(key.t).toFixed(2)+'s';
+      const summary=document.createElement('span');
+      summary.textContent=props.slice(0,3).map(prop=>`${labelFor(prop)} ${formatValue(prop,key.props[prop])}`).join('  ·  ')+(props.length>3?`  ·  +${props.length-3}`:'');
+      button.append(time,summary);
+      button.title=props.map(prop=>`${labelFor(prop)}: ${formatValue(prop,key.props[prop])}`).join('\n');
+      button.addEventListener('click',()=>selectKey(layer.id,key,preferred,true));
+      host.appendChild(button);
+    });
+  }
+  function makeField(labelText,control,hint){
+    const row=document.createElement('label');row.className='tc38-value-row';
+    const label=document.createElement('span');label.className='tc38-value-label';label.textContent=labelText;
+    const bottom=document.createElement('div');bottom.className='tc38-value-control';bottom.appendChild(control);
+    if(hint){const h=document.createElement('small');h.textContent=hint;bottom.appendChild(h)}
+    row.append(label,bottom);return row;
+  }
+  function commitValue(layerId,key,prop,value,input,commit){
+    if(!input.dataset.tc38Dirty){pushHistory();input.dataset.tc38Dirty='1';}
+    key.props[prop]=value;
+    animationRuntime.editedProps=null;
+    if(commit){delete input.dataset.tc38Dirty;saveCurrentProject(true);renderKeyChips();updateDotSelection();}
+    scheduleAnimPreview();
+  }
+  function moveSelectedPropTime(nextTime){
+    const resolved=resolveSelected();if(!resolved)return;
+    const {layer,key,prop,track}=resolved;
+    const duration=Math.max(.01,Math.min(30,Number($('#animDuration')?.value)||Number(state.animation?.duration)||4));
+    const target=Math.round(Math.max(0,Math.min(duration,Number(nextTime)||0))*1000)/1000;
+    if(Math.abs(target-Number(key.t))<.0005)return;
+    const collision=track.find(other=>other!==key&&Math.abs(Number(other.t)-target)<.001);
+    if(collision&&own(collision.props,prop)){toast('同じ属性のキーがその時刻にあります。別の時刻を指定してください');renderInspector();return;}
+    pushHistory();
+    const value=key.props[prop],easing=key.easings?.[prop]||key.easing||'linear';
+    delete key.props[prop];
+    if(!Object.keys(key.props||{}).length){const at=track.indexOf(key);if(at>=0)track.splice(at,1);}
+    let destination=collision;
+    if(!destination){destination={t:target,props:{},easing};track.push(destination);}
+    destination.props={...(destination.props||{}),[prop]:value};
+    destination.easings={...(destination.easings||{}),[prop]:easing};
+    track.sort((a,b)=>Number(a.t)-Number(b.t));
+    try{animTrackSortCache.delete(track)}catch(e){}
+    selected={layerId:layer.id,key:destination,prop,time:target};
+    animationRuntime.editedProps=null;
+    saveCurrentProject(true);
+    if($('#animTime'))$('#animTime').value=String(target);
+    seekAnimation(target);
+    renderAnimationTimeline();
+    toast(`${labelFor(prop)}のキー時刻を ${target.toFixed(2)}秒に変更しました`);
+  }
+  function deleteSelectedProp(){
+    const resolved=resolveSelected();if(!resolved)return;
+    const {layer,key,prop,track}=resolved;
+    pushHistory();delete key.props[prop];
+    if(!Object.keys(key.props||{}).length){const i=track.indexOf(key);if(i>=0)track.splice(i,1);}
+    selected=null;animationRuntime.editedProps=null;saveCurrentProject(true);
+    renderAnimationTimeline();renderAnimPreview();toast(`${labelFor(prop)}のキーフレームを削除しました`);
+  }
+  function selectKey(layerId,key,prop,moveHead){
+    if(!key||!prop||!own(key.props||{},prop))return;
+    selected={layerId,key,prop,time:Number(key.t)};
+    if(moveHead){
+      if($('#animTime'))$('#animTime').value=String(key.t);
+      seekAnimation(Number(key.t));
+    }
+    renderKeyChips();renderInspector();updateDotSelection();
+  }
+  function decorateTimeline(){
+    const namesHost=$('#animTrackNames'),tracksHost=$('#animTimelineTracks');
+    const lanes=[...(tracksHost?.querySelectorAll('.anim-track-lane[data-prop]')||[])];
+    const rows=[...(namesHost?.querySelectorAll('.anim-track-name')||[])];
+    rows.forEach((row,index)=>{
+      const lane=lanes[index],prop=lane?.dataset.prop;if(!prop)return;
+      row.dataset.prop=prop;row.classList.add('tc38-track-name');
+      const cb=row.querySelector('input');if(cb)cb.title=`${labelFor(prop)}を「キーフレーム追加」で記録する`;
+      const name=row.querySelector('span');
+      if(name){name.classList.add('tc38-track-copy');name.replaceChildren();const main=document.createElement('b');main.textContent=labelFor(prop);const sub=document.createElement('small');sub.className='tc38-track-desc';sub.textContent=propertyHint(prop);name.append(main,sub)}
+      const count=row.querySelector('small:not(.tc38-track-desc)');const n=layerTrack(current()?.id).filter(k=>own(k.props,prop)).length;
+      if(count){count.textContent=`${n} KEY${n===1?'':'S'}`;count.title=`${labelFor(prop)}のキーフレーム数`}
+      row.title=`${labelFor(prop)} · ${propertyHint(prop)}\n左のチェック：新しいキーフレームにこの属性を含める`;
+    });
+    lanes.forEach(lane=>{
+      const prop=lane.dataset.prop;
+      lane.querySelectorAll('.anim-key-dot').forEach(dot=>{
+        const t=Number(dot.dataset.keyTime),key=layerTrack(current()?.id).find(k=>Math.abs(Number(k.t)-t)<.001&&own(k.props,dot.dataset.prop));
+        const val=key?.props?.[prop];dot.title=`◆ ${labelFor(prop)}\n${formatValue(prop,val)}\n${t.toFixed(2)}秒 · ドラッグで時刻変更 · クリックで値を編集`;
+        dot.setAttribute('aria-label',`${labelFor(prop)} ${formatValue(prop,val)} のキーフレーム、${t.toFixed(2)}秒`);
+        dot.classList.toggle('tc38-selected',!!selected&&selected.prop===prop&&Math.abs(Number(selected.key?.t)-t)<.001);
+      });
+    });
+    const left=document.querySelector('.anim-track-label-header');if(left)left.textContent='属性トラック · □ 記録対象';
+    const title=$('.anim-timeline-title span');if(title)title.textContent='左=記録する属性 / ◆=値を編集するキー / 赤線=再生位置';
+  }
+  function renderInspector(){
+    const card=$('#tc38KeyInspector');if(!card)return;
+    const resolved=resolveSelected();card.replaceChildren();
+    const head=document.createElement('div');head.className='tc38-inspector-head';
+    const title=document.createElement('strong');title.textContent='選択中のキーフレーム';
+    const badge=document.createElement('span');badge.className='tc38-inspector-badge';badge.textContent=resolved?'KEY SELECTED':'NO KEY';
+    head.append(title,badge);card.appendChild(head);
+    if(!resolved){
+      const empty=document.createElement('div');empty.className='tc38-inspector-empty';
+      const b=document.createElement('b');b.textContent='タイムラインの ◆ をクリック';
+      const span=document.createElement('span');span.textContent='選択したキーの透明度・X・Y・回転・色・反転などをここで直接入力できます。';
+      empty.append(b,span);card.appendChild(empty);return;
+    }
+    const {layer,key,prop}=resolved;
+    const summary=document.createElement('div');summary.className='tc38-inspector-selected';
+    const propName=document.createElement('b');propName.textContent=labelFor(prop);
+    const timeText=document.createElement('span');timeText.textContent=`${Number(key.t).toFixed(2)} 秒 · ${formatValue(prop,key.props[prop])}`;
+    summary.append(propName,timeText);card.appendChild(summary);
+
+    const timeInput=document.createElement('input');timeInput.type='number';timeInput.className='field tc38-time-input';timeInput.min='0';timeInput.max=String(Math.max(.01,animDuration()));timeInput.step='.01';timeInput.value=Number(key.t).toFixed(2);timeInput.setAttribute('aria-label','この属性キーフレームの時刻（秒）');
+    timeInput.addEventListener('change',()=>moveSelectedPropTime(timeInput.value));
+    card.appendChild(makeField('キーの時刻',timeInput,'秒 · この属性のキーだけを移動'));
+
+    const value=key.props[prop];let control;
+    const onValue=(next,field,commit=false)=>commitValue(layer.id,key,prop,next,field,commit);
+    if(percentProps.has(prop)&&typeof value==='number'){
+      control=document.createElement('input');control.type='number';control.className='field';control.min='0';control.max='100';control.step='.1';control.value=String(Math.round(value*1000)/10);control.setAttribute('aria-label',labelFor(prop)+'（%）');
+      control.addEventListener('input',()=>{if(control.value==='')return;const n=Number(control.value);if(Number.isFinite(n))onValue(Math.max(0,Math.min(100,n))/100,control,false)});
+      control.addEventListener('change',()=>{if(control.value==='')control.value=String(Math.round(Number(key.props[prop])*1000)/10);onValue(Math.max(0,Math.min(100,Number(control.value)||0))/100,control,true);control.value=String(Math.round(Number(key.props[prop])*1000)/10)});
+      card.appendChild(makeField(labelFor(prop),control,'0〜100% · 例：75 = 75%'));
+    }else if(typeof value==='boolean'||boolProps.has(prop)){
+      control=document.createElement('input');control.type='checkbox';control.checked=!!value;control.className='tc38-bool-input';control.setAttribute('aria-label',labelFor(prop));
+      control.addEventListener('change',()=>onValue(control.checked,control,true));
+      card.appendChild(makeField(labelFor(prop),control,propertyHint(prop)));
+    }else if(colorProps.has(prop)&&typeof value==='string'&&/^#[0-9a-f]{3,8}$/i.test(value)){
+      control=document.createElement('input');control.type='color';control.className='tc38-color-input';control.value=value;control.setAttribute('aria-label',labelFor(prop));
+      control.addEventListener('input',()=>onValue(control.value,control,false));
+      control.addEventListener('change',()=>onValue(control.value,control,true));
+      card.appendChild(makeField(labelFor(prop),control,propertyHint(prop)));
+    }else if(typeof value==='number'){
+      control=document.createElement('input');control.type='number';control.className='field';control.value=String(value);control.step=['fontWeight'].includes(prop)?'100':(['rotation','gradientAngle','strokeGradientAngle'].includes(prop)?'1':'any');
+      if(['scale','scaleX','scaleY'].includes(prop))control.min='.01';
+      if(['fontSize','w','h'].includes(prop))control.min='0';
+      if(prop==='fontWeight'){control.min='100';control.max='900';}
+      control.setAttribute('aria-label',labelFor(prop));
+      control.addEventListener('input',()=>{if(control.value==='')return;const n=Number(control.value);if(Number.isFinite(n))onValue(n,control,false)});
+      control.addEventListener('change',()=>{if(control.value==='')return;const n=Number(control.value);if(Number.isFinite(n))onValue(n,control,true)});
+      card.appendChild(makeField(labelFor(prop),control,propertyHint(prop)));
+    }else if(['align','fillMode','strokeMode'].includes(prop)){
+      control=document.createElement('select');control.className='field';
+      const options=prop==='align'?['left','center','right']:['solid','gradient'];
+      options.forEach(opt=>{const o=document.createElement('option');o.value=opt;o.textContent=opt;control.appendChild(o)});control.value=String(value);
+      control.addEventListener('change',()=>onValue(control.value,control,true));
+      card.appendChild(makeField(labelFor(prop),control,propertyHint(prop)));
+    }else if(prop==='text'){
+      control=document.createElement('textarea');control.className='field';control.rows=3;control.value=String(value??'');control.maxLength=2000;
+      control.addEventListener('input',()=>onValue(control.value,control,false));control.addEventListener('change',()=>onValue(control.value,control,true));
+      card.appendChild(makeField(labelFor(prop),control,propertyHint(prop)));
+    }else if(typeof value==='string'){
+      control=document.createElement('input');control.type='text';control.className='field';control.value=value;control.maxLength=2000;
+      control.addEventListener('input',()=>onValue(control.value,control,false));control.addEventListener('change',()=>onValue(control.value,control,true));
+      card.appendChild(makeField(labelFor(prop),control,propertyHint(prop)));
+    }else{
+      const readonly=document.createElement('pre');readonly.className='tc38-readonly-value';readonly.textContent=JSON.stringify(value);
+      card.appendChild(makeField(labelFor(prop),readonly,'この形式の値は専用エディターから変更してください'));
+    }
+
+    const attrWrap=document.createElement('div');attrWrap.className='tc38-same-key';
+    const attrTitle=document.createElement('span');attrTitle.textContent='同じ時刻に保存されている属性';attrWrap.appendChild(attrTitle);
+    Object.keys(key.props||{}).forEach(p=>{const chip=document.createElement('button');chip.type='button';chip.className='tc38-attr-chip'+(p===prop?' active':'');chip.textContent=`${labelFor(p)} · ${formatValue(p,key.props[p])}`;chip.addEventListener('click',()=>selectKey(layer.id,key,p,false));attrWrap.appendChild(chip)});
+    card.appendChild(attrWrap);
+    const actions=document.createElement('div');actions.className='tc38-inspector-actions';
+    const del=document.createElement('button');del.type='button';del.className='btn danger';del.textContent='この属性キーを削除';del.addEventListener('click',deleteSelectedProp);
+    const jump=document.createElement('button');jump.type='button';jump.className='btn';jump.textContent='再生位置をこのキーへ';jump.addEventListener('click',()=>{if($('#animTime'))$('#animTime').value=String(key.t);seekAnimation(key.t)});
+    actions.append(del,jump);card.appendChild(actions);
+  }
+
+  // The selected-key editor sits above the font library so it is visible first.
+  const propsPane=document.querySelector('.anim-properties-scroll');
+  if(propsPane&&!$('#tc38KeyInspector')){
+    const card=document.createElement('section');card.id='tc38KeyInspector';card.className='tc38-key-inspector';propsPane.insertBefore(card,propsPane.firstChild);
+  }
+
+  // Make the label side scroll in lockstep with the time side, so rows never drift apart.
+  const leftScroll=document.querySelector('.anim-track-labels'),rightScroll=$('#animTimelineScroll');
+  if(leftScroll&&rightScroll&&!leftScroll.dataset.tc38ScrollBound){
+    leftScroll.dataset.tc38ScrollBound='1';
+    leftScroll.addEventListener('scroll',()=>{if(syncingScroll)return;syncingScroll=true;rightScroll.scrollTop=leftScroll.scrollTop;syncingScroll=false},{passive:true});
+    rightScroll.addEventListener('scroll',()=>{if(syncingScroll)return;syncingScroll=true;leftScroll.scrollTop=rightScroll.scrollTop;syncingScroll=false},{passive:true});
+  }
+
+  const baseRenderTimeline=renderAnimationTimeline;
+  renderAnimationTimeline=function(){
+    baseRenderTimeline();
+    if(selected){const layer=current(),track=layer?layerTrack(layer.id):[];if(!layer||layer.id!==selected.layerId||!track.some(k=>k===selected.key&&own(k.props,selected.prop)))selected=null;}
+    decorateTimeline();renderKeyChips();renderInspector();updateDotSelection();
+  };
+  const baseRenderAnimLayerList=renderAnimLayerList;
+  renderAnimLayerList=function(){baseRenderAnimLayerList();if(selected&&current()?.id!==selected.layerId)selected=null;renderInspector();};
+
+  const trackHost=$('#animTimelineTracks');
+  if(trackHost&&!trackHost.dataset.tc38SelectBound){
+    trackHost.dataset.tc38SelectBound='1';
+    trackHost.addEventListener('pointerdown',e=>{
+      const dot=e.target.closest?.('.anim-key-dot');if(!dot)return;
+      const layer=current(),prop=dot.dataset.prop,t=Number(dot.dataset.keyTime);if(!layer)return;
+      const key=layerTrack(layer.id).find(k=>Math.abs(Number(k.t)-t)<.001&&own(k.props,prop));if(key)selectKey(layer.id,key,prop,false);
+    },true);
+    trackHost.addEventListener('click',e=>{
+      const dot=e.target.closest?.('.anim-key-dot');if(!dot)return;
+      const layer=current(),prop=dot.dataset.prop,t=Number(dot.dataset.keyTime);if(!layer)return;
+      const key=layerTrack(layer.id).find(k=>Math.abs(Number(k.t)-t)<.001&&own(k.props,prop));if(key)selectKey(layer.id,key,prop,false);
+    },true);
+  }
+  // Keep the selected attribute attached to a key while that key is dragged.
+  document.addEventListener('pointerup',()=>{
+    if(typeof animKeyDrag!=='undefined'&&animKeyDrag?.key&&animKeyDrag?.prop){
+      const d=animKeyDrag;selected={layerId:d.layerId,key:d.key,prop:d.prop,time:Number(d.key.t)};
+      requestAnimationFrame(()=>{renderKeyChips();renderInspector();updateDotSelection()});
+    }
+  },true);
+
+  // Initial activation and subsequent refreshes.
+  const initialTimeline=renderAnimationTimeline;
+  if($('#animationModal')?.classList.contains('open'))initialTimeline();
+  renderInspector();
+  // Public debug/helpers for verification and advanced editing integrations.
+  window.TYPECRAFT_KEYFRAME_INSPECTOR={
+    select:(time,prop)=>{const layer=current();if(!layer)return false;const key=layerTrack(layer.id).find(k=>Math.abs(Number(k.t)-Number(time))<.001&&own(k.props,prop));if(!key)return false;selectKey(layer.id,key,prop,true);return true;},
+    getSelected:()=>{const r=resolveSelected();return r?{time:Number(r.key.t),prop:r.prop,value:r.key.props[r.prop]}:null;},
+    setValue(value){const r=resolveSelected();if(!r)return false;pushHistory();r.key.props[r.prop]=value;saveCurrentProject(true);renderAnimationTimeline();renderAnimPreview();return true;}
+  };
 })();
 
 })();
